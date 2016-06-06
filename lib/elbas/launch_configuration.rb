@@ -44,10 +44,22 @@ module Elbas
           associate_public_ip_address: fetch(:aws_launch_configuration_associate_public_ip, true)
         }
 
+        if iam_instance_profile = fetch(:aws_iam_instance_profile, nil)
+          options[:iam_instance_profile] = iam_instance_profile
+        end
+
+        if block_device_mappings = fetch(:aws_block_device_mappings, nil)
+          options[:block_device_mappings] = block_device_mappings
+        end
+
+        if key_pair = fetch(:aws_key_pair, nil)
+          options[:key_pair] = key_pair
+        end
+
         if user_data = fetch(:aws_launch_configuration_user_data, nil)
           options.merge user_data: user_data
         end
-
+        info "LC options: #{options.to_s}"
         options
       end
 
