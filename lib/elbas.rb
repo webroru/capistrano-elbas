@@ -12,6 +12,7 @@ require 'elbas/aws/ec2'
 require 'elbas/aws_resource'
 require 'elbas/ami'
 require 'elbas/launch_configuration'
+require 'elbas/extra_instance'
 
 module Elbas
 end
