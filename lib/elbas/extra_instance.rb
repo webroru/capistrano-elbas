@@ -29,7 +29,7 @@ module Elbas
       sleep 60
       p 'Ok. Continue'
 
-      after('deploy:finishing', 'elbas:decrease_instances')
+      after('deploy:finished', 'elbas:decrease_instances')
     end
   end
 end
