@@ -2,7 +2,6 @@ module Elbas
   module ExtraInstance
     def increase(amount)
       set :aws_autoscaling_min_size, autoscale_group.min_size
-      set :aws_autoscaling_desired_capacity, autoscale_group.desired_capacity
 
       p 'Increase numbers of instances'
       new_desired_capacity = autoscale_group.desired_capacity + amount

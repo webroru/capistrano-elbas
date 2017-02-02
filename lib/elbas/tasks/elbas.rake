@@ -16,7 +16,6 @@ namespace :elbas do
 
   task :decrease_instances do
     autoscale_group.update({
-      desired_capacity: fetch(:aws_autoscaling_desired_capacity),
       min_size: fetch(:aws_autoscaling_min_size),
     })
     p 'Numbers of instances set to original successfully!'
