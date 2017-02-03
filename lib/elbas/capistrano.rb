@@ -8,7 +8,7 @@ def autoscale(groupname, *args)
   include Elbas::AWS::AutoScaling
   include Elbas::ExtraInstance
 
-  autoscale_group   = autoscaling.groups[groupname]
+  autoscale_group = autoscaling.groups[groupname]
   set :aws_autoscale_group, groupname
 
   additional_instances_amount = fetch(:aws_additional_instances_amount, 0)

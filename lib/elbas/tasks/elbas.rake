@@ -15,6 +15,11 @@ namespace :elbas do
   end
 
   task :decrease_instances do
+    p 'Start Decreasing instances'
+    p "Current Desired capacity is: #{autoscale_group.desired_capacity}"
+    p "Current Min size is: #{autoscale_group.min_size}"
+    p "New Min size is: #{fetch(:aws_autoscaling_min_size)}"
+
     autoscale_group.update({
       min_size: fetch(:aws_autoscaling_min_size),
     })

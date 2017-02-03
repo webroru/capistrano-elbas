@@ -5,6 +5,9 @@ module Elbas
 
       p 'Increase numbers of instances'
       new_desired_capacity = autoscale_group.desired_capacity + amount
+      p "Current Desired capacity is: #{autoscale_group.desired_capacity}"
+      p "Current Min size is: #{autoscale_group.min_size}"
+      p "New Desired capacity and Min size is: #{new_desired_capacity}"
 
       autoscale_group.update({
         desired_capacity: new_desired_capacity,
