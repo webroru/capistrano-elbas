@@ -27,9 +27,36 @@ module Elbas
           abort 'New instance adding time is out'
         end
       end
-      p 'Instances added. Now await for load balancer attached.'
-      sleep 60
-      p 'Ok. Continue'
+
+      p 'Check the status of the instances'
+      elapsed_time = 0
+      step = 10
+      while autoscale_group.ec2_instances.filter('instance-status.status', 'ok').count < new_desired_capacity do
+        sleep step
+        elapsed_time += step
+        if elapsed_time % 60 == 0
+          p "#{elapsed_time / 60} minutes passed..."
+        end
+        if elapsed_time > 60 * 10
+          abort 'New instances are not reachable'
+        end
+      end
+
+      p 'Check the status of the system'
+      elapsed_time = 0
+      step = 10
+      while autoscale_group.ec2_instances.filter('system-status.status', 'ok').count < new_desired_capacity do
+        sleep step
+        elapsed_time += step
+        if elapsed_time % 60 == 0
+          p "#{elapsed_time / 60} minutes passed..."
+        end
+        if elapsed_time > 60 * 10
+          abort 'New instances are not reachable'
+        end
+      end
+
+      p 'Instances added successful'
 
       after('deploy:finished', 'elbas:decrease_instances')
     end
