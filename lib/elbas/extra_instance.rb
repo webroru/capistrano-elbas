@@ -31,21 +31,13 @@ module Elbas
       p 'Check the status of the instances'
       elapsed_time = 0
       step = 10
-      while autoscale_group.ec2_instances.filter('instance-status.status', 'ok').count < new_desired_capacity do
-        sleep step
-        elapsed_time += step
-        if elapsed_time % 60 == 0
-          p "#{elapsed_time / 60} minutes passed..."
-        end
-        if elapsed_time > 60 * 10
-          abort 'New instances are not reachable'
-        end
-      end
-
-      p 'Check the status of the system'
-      elapsed_time = 0
-      step = 10
-      while autoscale_group.ec2_instances.filter('system-status.status', 'ok').count < new_desired_capacity do
+      while autoscale_group.ec2_instances.first.client.describe_instance_status({
+        instance_ids: autoscale_group.ec2_instances.map{ |instance| instance.id },
+        filters: [
+          { name: 'instance-status.status', values: ['ok'] },
+          { name: 'system-status.status', values: ['ok'] },
+        ],
+      }).instance_status_set.count < new_desired_capacity do
         sleep step
         elapsed_time += step
         if elapsed_time % 60 == 0
